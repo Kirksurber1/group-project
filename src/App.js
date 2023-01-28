@@ -1,11 +1,15 @@
 import React from 'react'
-import MemeList from './components/MemeList'
+import Meme from './components/Meme'
 import './style.css'
 
 export default function App(){
     return(
         <div>
-            <MemeList />
+            <Meme 
+                topText='One does not simply'
+                bottomText='Walk into Mordor'
+                image='http://i.imgflip.com/1bij.jpg'
+            />
         </div>
     )
 }

@@ -2,12 +2,8 @@
     box-sizing: border-box;
 }
 
-.memeList {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 
+/* MEME STYLES */
 .meme {
     position: relative;
 }
