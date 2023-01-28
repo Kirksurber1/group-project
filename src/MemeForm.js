@@ -51,6 +51,7 @@ function MemeForm (props) {
             id: Math.random().toString()
         }
 
+
      // console.log(memeData)
       //set
         
