@@ -1,10 +1,10 @@
 import React from "react";
 import './MemeForm.css'
+import Meme from './components/Meme'
 
 function MemeForm (props) {
 
-    
-
+    // initializing empy Meme with default image
     const [meme, setMeme] = React.useState({
         id: "",
         topText: "",
@@ -20,7 +20,6 @@ function MemeForm (props) {
         .then(data => setAllMemeIMages(data.data.memes) )
     }, [] )
 
-    console.log(allMemeImages)
 
     function getNewImage (event) {
         event.preventDefault()
@@ -33,6 +32,7 @@ function MemeForm (props) {
                 
             }))
     }
+
     function handleChange (event) {
         const {name, value} =event.target
         setMeme(prevMeme => ({
@@ -40,21 +40,35 @@ function MemeForm (props) {
             [name]: value
     }) )
     }
+    
+    const [savedMemes, setSavedMemes] = React.useState([])
+
+    function deleteMeme(id){
+        setSavedMemes(prevSavedMemes=> prevSavedMemes.filter(
+            savedMeme => savedMeme.props.id !== id
+        ))
+    }
+
+    function editMeme(id){
+        console.log(`editing ${id}`)
+    }
 
     function handleSubmit (event) {
+        const id = Math.random().toString()
         event.preventDefault()
         /// send to api
-        const memeData = {
-            topText: meme.topText,
-            bottomText: meme.bottomText, 
-            randomImage: meme.randomImage,
-            id: Math.random().toString()
-        }
+        const newMeme = <Meme
+            topText= {meme.topText}
+            bottomText= {meme.bottomText}
+            image= {meme.randomImage}
+            id= {id}
+            key= {id}
+            editMeme= {()=>editMeme(id)}
+            deleteMeme={()=>deleteMeme(id)}
+            isSaved={true}
+        />
 
-
-     // console.log(memeData)
-      //set
-        
+        setSavedMemes(prevSavedMemes=>[...prevSavedMemes, newMeme])
     }
 
     return (
@@ -62,32 +76,35 @@ function MemeForm (props) {
             <div className="memeInput">
                 <form onSubmit={handleSubmit}>
                     <input 
-                    type="text" 
-                    placeholder="Top Text"
-                    className="memeInput"
-                    name="topText"
-                    value={meme.topText}
-                    onChange= {handleChange}
-                    ></input>
+                        type="text" 
+                        placeholder="Top Text"
+                        className="memeInput"
+                        name="topText"
+                        value={meme.topText}
+                        onChange= {handleChange}
+                    />
                     <input 
-                    type="text" 
-                    placeholder="Bottom Text"
-                    className="memeInput"
-                    name="bottomText"
-                    value={meme.bottomText}
-                    onChange={handleChange}
-                    ></input>
+                        type="text" 
+                        placeholder="Bottom Text"
+                        className="memeInput"
+                        name="bottomText"
+                        value={meme.bottomText}
+                        onChange={handleChange}
+                    />
                     <button onClick={getNewImage}>Refresh Meme</button>
                     <button>Add to List</button>
                 </form>
             </div>
             <div className="memeDisplay">
-                <div className="imageBox">
-                    <img src={meme.randomImage} className="memeImage" alt="random"/>
-                    <h2 className="memeText top">{meme.topText}</h2>
-                    <h2 className="memeText bottom">{meme.bottomText}</h2>
-                </div>
+                <Meme 
+                    image={meme.randomImage}
+                    topText={meme.topText}
+                    bottomText={meme.bottomText}
+                    isSaved={false}
+                />
             </div>
+            <h1>Saved Memes</h1>
+            {savedMemes}
         </div>
     )
 }

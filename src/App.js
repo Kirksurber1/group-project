@@ -20,11 +20,12 @@ export default function App(){
 
     return(
         <div>
-            <Meme 
+            <MemeForm />
+            {/* <Meme 
                 topText='One does not simply'
                 bottomText='Walk into Mordor'
                 image='http://i.imgflip.com/1bij.jpg'
-            />
+            /> */}
         </div>
     )
 }

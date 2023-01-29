@@ -4,16 +4,26 @@
 
 
 /* MEME STYLES */
+.meme-container{
+    width: 80%;
+    margin: 0 auto;
+}
 .meme {
     position: relative;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
 }
 
 .meme--image {
     max-width: 100%;
     border-radius: 3px;
+    margin: 0 auto;
 }
 
 .meme--text {
+    margin: 0 auto;
     position: absolute;
     width: 80%;
     text-align: center;
@@ -36,6 +46,13 @@
         0 -2px 0 #000,
         -2px 0 0 #000,
         2px 2px 5px #000;
+}
+
+.meme--buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
 }
 
 .bottom {
