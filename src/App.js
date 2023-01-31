@@ -2,7 +2,6 @@ import React from 'react'
 import Meme from './components/Meme'
 import './style.css'
 import MemeForm from './components/MemeForm'
-import './MemeForm.css'
 
 export default function App(){
 
@@ -55,9 +54,11 @@ export default function App(){
 
     return(
         <div>
+            <h1>Create a Meme</h1>
             <MemeForm 
                 submit={addMeme}
             />
+            <h1>Saved Memes</h1>
             {savedMemes}
         </div>
     )

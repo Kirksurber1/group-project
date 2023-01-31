@@ -51,7 +51,7 @@ export default function Meme(props){
                 />
                 <input 
                     name="bottomText"
-                    placeHolder={props.bottomText}
+                    placeholder={props.bottomText}
                     value={memeData.bottomText}
                     onChange={handleChange}
                 />
