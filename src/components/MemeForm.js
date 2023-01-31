@@ -1,75 +1,57 @@
 import React from "react";
 import './MemeForm.css'
-import Meme from './components/Meme'
+import Meme from './Meme'
 
 function MemeForm (props) {
 
-    // initializing empy Meme with default image
-    const [meme, setMeme] = React.useState({
-        id: "",
+    // initializing object with meme input data
+    const [memeInputs, setMemeInputs] = React.useState({
         topText: "",
         bottomText: "",
         randomImage: "http://i.imgflip.com/1bij.jpg"
     })
 
+    // updates when changes are detected in input boxes
+    function handleChange (event) {
+        const {name, value} =event.target
+        setMemeInputs(prevMeme => ({
+            ...prevMeme,
+            [name]: value
+    }) )
+    }
+
+    // empty array to hold meme images from API
     const [allMemeImages, setAllMemeIMages] = React.useState([])
 
+    // fetch images from API
     React.useEffect (() => {
         fetch("https://api.imgflip.com/get_memes")
         .then(res => res.json())
         .then(data => setAllMemeIMages(data.data.memes) )
     }, [] )
 
-
+    // refresh image to a new random image from allMemeImages
     function getNewImage (event) {
         event.preventDefault()
-
-            const random = Math.floor(Math.random() * allMemeImages.length)
-            const url = allMemeImages[random].url
-            setMeme(prevMeme => ({
-                ...prevMeme,
-                randomImage: url,
-                
-            }))
+        const random = Math.floor(Math.random() * allMemeImages.length)
+        const url = allMemeImages[random].url
+        setMemeInputs(prevMeme => ({
+            ...prevMeme,
+            randomImage: url,
+        }))
     }
 
-    function handleChange (event) {
-        const {name, value} =event.target
-        setMeme(prevMeme => ({
-            ...prevMeme,
-            [name]: value
-    }) )
+    // submit meme to Saved Memes
+    function handleSubmit (event) {
+        event.preventDefault()
+        props.submit(memeInputs);
+        setMemeInputs({
+            topText: "",
+            bottomText: "",
+            randomImage: "http://i.imgflip.com/1bij.jpg"
+        })
     }
     
-    const [savedMemes, setSavedMemes] = React.useState([])
-
-    function deleteMeme(id){
-        setSavedMemes(prevSavedMemes=> prevSavedMemes.filter(
-            savedMeme => savedMeme.props.id !== id
-        ))
-    }
-
-    function editMeme(id){
-        console.log(`editing ${id}`)
-    }
-
-    function handleSubmit (event) {
-        const id = Math.random().toString()
-        event.preventDefault()
-        /// send to api
-        const newMeme = <Meme
-            topText= {meme.topText}
-            bottomText= {meme.bottomText}
-            image= {meme.randomImage}
-            id= {id}
-            key= {id}
-            editMeme= {()=>editMeme(id)}
-            deleteMeme={()=>deleteMeme(id)}
-            isSaved={true}
-        />
-
-        setSavedMemes(prevSavedMemes=>[...prevSavedMemes, newMeme])
-    }
 
     return (
         <div className="memeGeneration">
@@ -80,7 +62,7 @@ function MemeForm (props) {
                         placeholder="Top Text"
                         className="memeInput"
                         name="topText"
-                        value={meme.topText}
+                        value={memeInputs.topText}
                         onChange= {handleChange}
                     />
                     <input 
@@ -88,7 +70,7 @@ function MemeForm (props) {
                         placeholder="Bottom Text"
                         className="memeInput"
                         name="bottomText"
-                        value={meme.bottomText}
+                        value={memeInputs.bottomText}
                         onChange={handleChange}
                     />
                     <button onClick={getNewImage}>Refresh Meme</button>
@@ -97,14 +79,12 @@ function MemeForm (props) {
             </div>
             <div className="memeDisplay">
                 <Meme 
-                    image={meme.randomImage}
-                    topText={meme.topText}
-                    bottomText={meme.bottomText}
+                    image={memeInputs.randomImage}
+                    topText={memeInputs.topText}
+                    bottomText={memeInputs.bottomText}
                     isSaved={false}
                 />
             </div>
-            <h1>Saved Memes</h1>
-            {savedMemes}
         </div>
     )
 }
