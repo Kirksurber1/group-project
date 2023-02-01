@@ -37,7 +37,7 @@ export default function Meme(props){
     return(
         <div className='meme-container'>
         <div className='meme'>
-            <img src={props.image} className='meme--image'></img>
+            <img src={props.image} className='meme--image' alt="meme"></img>
             <h1 className='meme--text top'>{memeData.topText}</h1>
             <h1 className='meme--text bottom'>{memeData.bottomText}</h1>
         </div>
